@@ -32,7 +32,6 @@
       margin-top: 20px;
     }
 
-    /* Timer */
     #timer {
       font-size: 24px;
       font-weight: bold;
@@ -41,7 +40,6 @@
       color: #e74c3c;
     }
 
-    /* Grid Table */
     table {
       border-collapse: collapse;
       margin: 20px auto;
@@ -76,7 +74,6 @@
       font-weight: bold;
     }
 
-    /* Daftar Provinsi */
     ul {
       list-style-type: none;
       padding: 0;
@@ -101,7 +98,6 @@
       background-color: #357ABD;
     }
 
-    /* Untuk elemen header */
     h2 {
       font-size: 28px;
       color: #333;
@@ -111,8 +107,10 @@
       font-size: 20px;
       color: #4a90e2;
     }
-
   </style>
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
@@ -135,7 +133,7 @@
   <li>PAPUATENGAH</li>
 </ul>
 
-<div id="timer">Waktu: 00:10</div>
+<div id="timer">Waktu: 00:60</div>
 
 <script>
 const words = [
@@ -148,10 +146,9 @@ const gridSize = 20;
 const grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(''));
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-// Timer setup
-let timeLeft = 60; // 10 seconds
+let timeLeft = 60;
 const timerElement = document.getElementById('timer');
-let gameOver = false; // Flag to check if game is over
+let gameOver = false;
 
 function updateTimer() {
   const seconds = timeLeft;
@@ -159,7 +156,15 @@ function updateTimer() {
 
   if (timeLeft <= 0) {
     clearInterval(timerInterval);
-    alert('Waktu habis! Game selesai!');
+    gameOver = true;
+    Swal.fire({
+      title: '⏰ Waktu Habis!',
+      text: 'Tolol anak UPI, Coba lagi yuk!',
+      icon: 'error',
+      confirmButtonText: 'Ulangi'
+    }).then(() => {
+      location.reload();
+    });
   } else {
     timeLeft--;
   }
@@ -199,7 +204,6 @@ function placeWord(word) {
   }
 }
 
-// Place all words in the grid
 words.forEach(placeWord);
 
 for (let r = 0; r < gridSize; r++) {
@@ -252,8 +256,16 @@ function checkWord() {
       td.classList.add("correct");
     });
     selectedCells.length = 0;
-    gameOver = true; // End the game
-    alert('Kata ditemukan! Anda menang!');
+    gameOver = true;
+
+    Swal.fire({
+      title: '🎉 Selamat! Anjai tumben anak UPI Pinter',
+      text: `Kamu menemukan: ${word}`,
+      icon: 'success',
+      confirmButtonText: 'Main Lagi'
+    }).then(() => {
+      location.reload();
+    });
   }
 }
 </script>
