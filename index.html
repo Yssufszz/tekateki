@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Teka-Teki Provinsi Interaktif</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 10px;
+      padding: 0;
+      background: #f9f9f9;
+    }
+
+    h2, p, h3 {
+      text-align: center;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin: 10px auto;
+      max-width: 95vw;
+    }
+
+    td {
+      border: 1px solid #333;
+      width: 6vw;
+      height: 6vw;
+      max-width: 35px;
+      max-height: 35px;
+      text-align: center;
+      font-size: 4vw;
+      max-font-size: 18px;
+      cursor: pointer;
+      user-select: none;
+      background-color: white;
+      transition: background 0.2s;
+    }
+
+    td.selected {
+      background-color: yellow;
+    }
+
+    td.correct {
+      background-color: lightgreen;
+      pointer-events: none;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      max-width: 500px;
+      margin: 10px auto;
+      font-size: 16px;
+    }
+
+    li {
+      padding: 4px 0;
+    }
+  </style>
+</head>
+<body>
+
+<h2>🧩 Teka-Teki Provinsi Interaktif</h2>
+<p>Sentuh atau klik huruf berurutan untuk membentuk nama provinsi.</p>
+
+<table id="grid"></table>
+
+<h3>🗺️ Daftar Provinsi:</h3>
+<ul id="words">
+  <li>SUMATERABARAT</li>
+  <li>SUMATERAUTARA</li>
+  <li>KALIMANTANBARAT</li>
+  <li>KALIMANTANSELATAN</li>
+  <li>KALIMANTANUTARA</li>
+  <li>SULAWESIUTARA</li>
+  <li>SULAWESITENGAH</li>
+  <li>NUSATENGGARABARAT</li>
+  <li>PAPUABARAT</li>
+  <li>PAPUATENGAH</li>
+</ul>
+
+<script>
+const words = [
+  "SUMATERABARAT", "SUMATERAUTARA", "KALIMANTANBARAT", "KALIMANTANSELATAN",
+  "KALIMANTANUTARA", "SULAWESIUTARA", "SULAWESITENGAH", "NUSATENGGARABARAT",
+  "PAPUABARAT", "PAPUATENGAH"
+];
+
+const gridSize = 20;
+const grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(''));
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+// Fungsi untuk menempatkan kata di grid
+function placeWord(word) {
+  const direction = Math.random() > 0.5 ? 'H' : 'V';
+  const maxRow = direction === 'H' ? gridSize : gridSize - word.length;
+  const maxCol = direction === 'H' ? gridSize - word.length : gridSize;
+
+  let placed = false;
+  while (!placed) {
+    const row = Math.floor(Math.random() * maxRow);
+    const col = Math.floor(Math.random() * maxCol);
+    let fits = true;
+
+    for (let i = 0; i < word.length; i++) {
+      const r = direction === 'H' ? row : row + i;
+      const c = direction === 'H' ? col + i : col;
+      const current = grid[r][c];
+      if (current !== '' && current !== word[i]) {
+        fits = false;
+        break;
+      }
+    }
+
+    if (fits) {
+      for (let i = 0; i < word.length; i++) {
+        const r = direction === 'H' ? row : row + i;
+        const c = direction === 'H' ? col + i : col;
+        grid[r][c] = word[i];
+      }
+      placed = true;
+    }
+  }
+}
+
+// Tempatkan semua kata
+words.forEach(w => placeWord(w));
+
+// Isi sisa grid dengan huruf acak
+for (let r = 0; r < gridSize; r++) {
+  for (let c = 0; c < gridSize; c++) {
+    if (grid[r][c] === '') {
+      grid[r][c] = alphabet[Math.floor(Math.random() * alphabet.length)];
+    }
+  }
+}
+
+// Render grid ke HTML
+const gridTable = document.getElementById("grid");
+const selectedCells = [];
+
+grid.forEach((row, rowIndex) => {
+  const tr = document.createElement("tr");
+  row.forEach((char, colIndex) => {
+    const td = document.createElement("td");
+    td.textContent = char;
+    td.dataset.row = rowIndex;
+    td.dataset.col = colIndex;
+
+    td.addEventListener("click", () => {
+      if (td.classList.contains("correct")) return;
+
+      if (!td.classList.contains("selected")) {
+        td.classList.add("selected");
+        selectedCells.push(td);
+      } else {
+        td.classList.remove("selected");
+        const index = selectedCells.indexOf(td);
+        if (index > -1) selectedCells.splice(index, 1);
+      }
+
+      checkWord();
+    });
+
+    tr.appendChild(td);
+  });
+  gridTable.appendChild(tr);
+});
+
+// Cek apakah kata yang dipilih benar
+function checkWord() {
+  const word = selectedCells.map(td => td.textContent).join("");
+  const reversed = selectedCells.map(td => td.textContent).reverse().join("");
+  const upperWords = words.map(w => w.toUpperCase());
+
+  if (upperWords.includes(word) || upperWords.includes(reversed)) {
+    selectedCells.forEach(td => {
+      td.classList.remove("selected");
+      td.classList.add("correct");
+    });
+    selectedCells.length = 0;
+  }
+}
+</script>
+
+</body>
+</html>
