@@ -91,7 +91,6 @@ const gridSize = 20;
 const grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(''));
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-// Fungsi untuk menempatkan kata di grid
 function placeWord(word) {
   const direction = Math.random() > 0.5 ? 'H' : 'V';
   const maxRow = direction === 'H' ? gridSize : gridSize - word.length;
@@ -124,10 +123,8 @@ function placeWord(word) {
   }
 }
 
-// Tempatkan semua kata
 words.forEach(w => placeWord(w));
 
-// Isi sisa grid dengan huruf acak
 for (let r = 0; r < gridSize; r++) {
   for (let c = 0; c < gridSize; c++) {
     if (grid[r][c] === '') {
@@ -136,7 +133,6 @@ for (let r = 0; r < gridSize; r++) {
   }
 }
 
-// Render grid ke HTML
 const gridTable = document.getElementById("grid");
 const selectedCells = [];
 
@@ -168,7 +164,6 @@ grid.forEach((row, rowIndex) => {
   gridTable.appendChild(tr);
 });
 
-// Cek apakah kata yang dipilih benar
 function checkWord() {
   const word = selectedCells.map(td => td.textContent).join("");
   const reversed = selectedCells.map(td => td.textContent).reverse().join("");
@@ -176,10 +171,10 @@ function checkWord() {
 
   if (upperWords.includes(word) || upperWords.includes(reversed)) {
     selectedCells.forEach(td => {
-      td.classList.remove("selected");
-      td.classList.add("correct");
+      td.classList.remove("selected");  // Remove the selected state
+      td.classList.add("correct");      // Apply correct state
     });
-    selectedCells.length = 0;
+    selectedCells.length = 0;  // Clear the selectedCells array to start fresh
   }
 }
 </script>
