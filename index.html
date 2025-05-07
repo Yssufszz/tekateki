@@ -32,6 +32,15 @@
       margin-top: 20px;
     }
 
+    /* Timer */
+    #timer {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      color: #e74c3c;
+    }
+
     /* Grid Table */
     table {
       border-collapse: collapse;
@@ -126,6 +135,8 @@
   <li>PAPUATENGAH</li>
 </ul>
 
+<div id="timer">Waktu: 00:10</div>
+
 <script>
 const words = [
   "SUMATERABARAT", "SUMATERAUTARA", "KALIMANTANBARAT", "KALIMANTANSELATAN",
@@ -136,6 +147,25 @@ const words = [
 const gridSize = 20;
 const grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(''));
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+// Timer setup
+let timeLeft = 10; // 10 seconds
+const timerElement = document.getElementById('timer');
+let gameOver = false; // Flag to check if game is over
+
+function updateTimer() {
+  const seconds = timeLeft;
+  timerElement.textContent = `Waktu: 00:${String(seconds).padStart(2, '0')}`;
+
+  if (timeLeft <= 0) {
+    clearInterval(timerInterval);
+    alert('Waktu habis! Game selesai!');
+  } else {
+    timeLeft--;
+  }
+}
+
+const timerInterval = setInterval(updateTimer, 1000);
 
 function placeWord(word) {
   const direction = Math.random() > 0.5 ? 'H' : 'V';
@@ -169,7 +199,8 @@ function placeWord(word) {
   }
 }
 
-words.forEach(w => placeWord(w));
+// Place all words in the grid
+words.forEach(placeWord);
 
 for (let r = 0; r < gridSize; r++) {
   for (let c = 0; c < gridSize; c++) {
@@ -191,7 +222,7 @@ grid.forEach((row, rowIndex) => {
     td.dataset.col = colIndex;
 
     td.addEventListener("click", () => {
-      if (td.classList.contains("correct")) return;
+      if (gameOver || td.classList.contains("correct")) return;
 
       if (!td.classList.contains("selected")) {
         td.classList.add("selected");
@@ -217,10 +248,12 @@ function checkWord() {
 
   if (upperWords.includes(word) || upperWords.includes(reversed)) {
     selectedCells.forEach(td => {
-      td.classList.remove("selected"); 
-      td.classList.add("correct");      
+      td.classList.remove("selected");
+      td.classList.add("correct");
     });
-    selectedCells.length = 0;  
+    selectedCells.length = 0;
+    gameOver = true; // End the game
+    alert('Kata ditemukan! Anda menang!');
   }
 }
 </script>
