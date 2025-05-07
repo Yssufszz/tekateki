@@ -5,58 +5,104 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Teka-Teki Provinsi Interaktif</title>
   <style>
+    /* Umum */
     body {
-      font-family: sans-serif;
-      margin: 10px;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
       padding: 0;
-      background: #f9f9f9;
+      background: #f0f8ff;
+      color: #333;
     }
 
     h2, p, h3 {
       text-align: center;
+      font-size: 24px;
+      color: #4a90e2;
+      margin-bottom: 10px;
     }
 
+    p {
+      font-size: 18px;
+      margin-top: 0;
+      color: #555;
+    }
+
+    h3 {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+
+    /* Grid Table */
     table {
       border-collapse: collapse;
-      margin: 10px auto;
-      max-width: 95vw;
+      margin: 20px auto;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     td {
-      border: 1px solid #333;
-      width: 6vw;
-      height: 6vw;
-      max-width: 35px;
-      max-height: 35px;
+      border: 1px solid #ddd;
+      width: 40px;
+      height: 40px;
       text-align: center;
-      font-size: 4vw;
-      max-font-size: 18px;
+      font-size: 16px;
       cursor: pointer;
-      user-select: none;
-      background-color: white;
-      transition: background 0.2s;
+      background-color: #fff;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    td:hover {
+      background-color: #f9f9f9;
+      transform: scale(1.1);
     }
 
     td.selected {
-      background-color: yellow;
+      background-color: #ffeb3b;
     }
 
     td.correct {
-      background-color: lightgreen;
+      background-color: #4caf50;
       pointer-events: none;
+      color: white;
+      font-weight: bold;
     }
 
+    /* Daftar Provinsi */
     ul {
       list-style-type: none;
       padding: 0;
-      max-width: 500px;
-      margin: 10px auto;
-      font-size: 16px;
+      max-width: 600px;
+      margin: 0 auto;
+      font-size: 18px;
+      text-align: center;
     }
 
     li {
-      padding: 4px 0;
+      display: inline-block;
+      background: #4a90e2;
+      color: white;
+      padding: 8px 20px;
+      margin: 5px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
+
+    li:hover {
+      background-color: #357ABD;
+    }
+
+    /* Untuk elemen header */
+    h2 {
+      font-size: 28px;
+      color: #333;
+    }
+
+    h3 {
+      font-size: 20px;
+      color: #4a90e2;
+    }
+
   </style>
 </head>
 <body>
@@ -171,10 +217,10 @@ function checkWord() {
 
   if (upperWords.includes(word) || upperWords.includes(reversed)) {
     selectedCells.forEach(td => {
-      td.classList.remove("selected");  // Remove the selected state
-      td.classList.add("correct");      // Apply correct state
+      td.classList.remove("selected"); 
+      td.classList.add("correct");      
     });
-    selectedCells.length = 0;  // Clear the selectedCells array to start fresh
+    selectedCells.length = 0;  
   }
 }
 </script>
