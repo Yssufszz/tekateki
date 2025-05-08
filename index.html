@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Teka-Teki Provinsi Interaktif</title>
   <style>
-    /* Umum */
     body {
       font-family: 'Arial', sans-serif;
       margin: 0;
@@ -108,8 +107,6 @@
       color: #4a90e2;
     }
   </style>
-
-  <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
@@ -141,6 +138,60 @@ const words = [
   "KALIMANTANUTARA", "SULAWESIUTARA", "SULAWESITENGAH", "NUSATENGGARABARAT",
   "PAPUABARAT", "PAPUATENGAH"
 ];
+
+const questionsMap = {
+  SUMATERABARAT: [
+    "Apa nama rumah adat tradisional dari Sumatera Barat?",
+    "Apa makanan khas Sumatera Barat yang terkenal hingga ke luar negeri?",
+    "Apa nama suku mayoritas yang tinggal di Sumatera Barat?"
+  ],
+  SUMATERAUTARA: [
+    "Apa nama tarian tradisional dari suku Batak di Sumatera Utara?",
+    "Apa nama alat musik tradisional khas Batak?",
+    "Apa nama pakaian adat dari suku Batak?"
+  ],
+  KALIMANTANBARAT: [
+    "Apa nama rumah panjang khas suku Dayak di Kalimantan Barat?",
+    "Festival budaya terkenal di Kalimantan Barat adalah?",
+    "Apa alat musik tiup tradisional suku Dayak?"
+  ],
+  KALIMANTANSELATAN: [
+    "Apa nama rumah adat suku Banjar di Kalimantan Selatan?",
+    "Apa nama tarian tradisional dari Kalimantan Selatan?",
+    "Sungai besar yang menjadi pusat budaya di Kalimantan Selatan?"
+  ],
+  KALIMANTANUTARA: [
+    "Apa nama suku asli yang banyak mendiami Kalimantan Utara?",
+    "Apa nama alat musik tradisional dari Kalimantan Utara?",
+    "Apa nama baju adat dari suku Tidung?"
+  ],
+  SULAWESIUTARA: [
+    "Apa nama tarian perang dari Sulawesi Utara?",
+    "Apa makanan khas dari Sulawesi Utara yang terkenal pedas?",
+    "Apa nama rumah adat masyarakat Minahasa?"
+  ],
+  SULAWESITENGAH: [
+    "Apa nama tarian penyambutan tamu dari Sulawesi Tengah?",
+    "Apa nama rumah adat suku Kaili di Sulawesi Tengah?",
+    "Apa nama alat musik tiup dari Sulawesi Tengah?"
+  ],
+  NUSATENGGARABARAT: [
+    "Apa nama suku terbesar di Pulau Lombok, NTB?",
+    "Apa nama rumah adat dari suku Sasak?",
+    "Apa nama alat musik khas NTB yang dimainkan dengan cara dipukul?"
+  ],
+  PAPUABARAT: [
+    "Apa nama rumah tradisional masyarakat Papua?",
+    "Apa nama tarian perang khas Papua Barat?",
+    "Apa seni lukis tubuh tradisional suku Papua?"
+  ],
+  PAPUATENGAH: [
+    "Apa nama upacara adat penting dalam masyarakat Papua Tengah?",
+    "Apa hasil kerajinan tangan suku Dani di Lembah Baliem?",
+    "Apa nama suku besar yang tinggal di Papua Tengah?"
+  ]
+};
+
 
 const gridSize = 20;
 const grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(''));
@@ -248,26 +299,28 @@ grid.forEach((row, rowIndex) => {
 function checkWord() {
   const word = selectedCells.map(td => td.textContent).join("");
   const reversed = selectedCells.map(td => td.textContent).reverse().join("");
-  const upperWords = words.map(w => w.toUpperCase());
+  const found = words.find(w => w === word || w === reversed);
 
-  if (upperWords.includes(word) || upperWords.includes(reversed)) {
+  if (found) {
     selectedCells.forEach(td => {
       td.classList.remove("selected");
       td.classList.add("correct");
     });
     selectedCells.length = 0;
-    gameOver = true;
+
+    // Ambil pertanyaan random
+    const questions = questionsMap[found];
+    const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
 
     Swal.fire({
-      title: '🎉 Selamat! Anjai tumben anak UPI Pinter',
-      text: `Kamu menemukan: ${word}`,
+      title: `🎉 Kamu menemukan: ${found}`,
+      text: randomQuestion,
       icon: 'success',
-      confirmButtonText: 'Main Lagi'
-    }).then(() => {
-      location.reload();
+      confirmButtonText: 'Lanjutkan'
     });
   }
 }
+
 </script>
 
 </body>
