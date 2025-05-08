@@ -85,7 +85,7 @@
   
     li {
       display: inline-block;
-      background: #4a90e2; /* Biru Muda */
+      background: #4a90e2;
       color: white;
       padding: 8px 20px;
       margin: 5px;
@@ -95,7 +95,7 @@
     }
   
     li:hover {
-      background-color: #357ABD; /* Biru lebih gelap saat hover */
+      background-color: #357ABD;
     }
   
     h2 {
@@ -105,7 +105,7 @@
   
     h3 {
       font-size: 20px;
-      color: #4a90e2; /* Biru Muda */
+      color: #4a90e2; 
     }
   </style>
   
@@ -214,7 +214,7 @@ function updateTimer() {
     Swal.fire({
       title: '⏰ Yah Waktunya Habis!',
       text: 'Coba lagi aja ya, Goodluck!',
-      text: 'Semangat ya! dari Sahwa Sabila',
+      text: 'Semangat ya!',
       icon: 'error',
       confirmButtonText: 'Ulangi'
     }).then(() => {
@@ -316,7 +316,7 @@ function checkWord() {
     const random = questionSet[Math.floor(Math.random() * questionSet.length)];
 
     Swal.fire({
-        title: `🎉 Anjay Kamu Bener Nih Ada Pertanyaan Seputar Kata Ini: ${found}`,
+        title: `🎉 Yeayy Kamu Bener Nih Ada Pertanyaan Seputar Kata Ini: ${found}`,
         text: random.q,
         input: 'text',
         inputPlaceholder: 'Tulis jawabanmu di sini...',
@@ -324,7 +324,7 @@ function checkWord() {
         confirmButtonText: 'Cek Jawaban',
         preConfirm: (answer) => {
             if (!answer) {
-            Swal.showValidationMessage('Jawaban tidak boleh kosong!');
+            Swal.showValidationMessage('Jawaban ga boleh kosong loh!');
             return false;
             }
             return answer;
@@ -334,13 +334,13 @@ function checkWord() {
             const userAnswer = result.value.trim().toLowerCase();
             const correctAnswer = random.a.trim().toLowerCase();
 
-            clearInterval(timerInterval); // ⏹️ Stop timer di sini
+            clearInterval(timerInterval);
             gameOver = true;
 
             if (userAnswer === correctAnswer) {
             Swal.fire('✅ Benar!', `Jawabanmu benar: ${random.a}`, 'success');
             } else {
-            Swal.fire('❌ Salah!', `Jawaban yang benar adalah: ${random.a}`, 'error');
+            Swal.fire('❌ Salah!', `Jawaban yang benar itu ini: ${random.a}`, 'error');
             }
         }
     });
