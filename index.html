@@ -9,27 +9,27 @@
       font-family: 'Arial', sans-serif;
       margin: 0;
       padding: 0;
-      background: #FFDBE9; /* Pink Pastel */
+      background: #FFDBE9;
       color: #333;
     }
   
     h2, p, h3 {
       text-align: center;
       font-size: 24px;
-      color: #A2DFF7; /* Biru Muda */
+      color: #A2DFF7; 
       margin-bottom: 10px;
     }
   
     p {
       font-size: 18px;
       margin-top: 0;
-      color: #333; /* Abu-abu Gelap */
+      color: #333;
     }
   
     h3 {
       font-size: 20px;
       margin-top: 20px;
-      color: #A2DFF7; /* Biru Muda */
+      color: #A2DFF7; 
     }
   
     #timer {
@@ -37,7 +37,7 @@
       font-weight: bold;
       text-align: center;
       margin-top: 20px;
-      color: #FFD700; /* Emas */
+      color: #77C3EC;
     }
   
     table {
@@ -64,11 +64,11 @@
     }
   
     td.selected {
-      background-color: #B2F2B7; /* Hijau Mint */
+      background-color: #BBE2f2; 
     }
   
     td.correct {
-      background-color: #4CAF50; /* Hijau untuk jawaban benar */
+      background-color: #89CFF0; 
       pointer-events: none;
       color: white;
       font-weight: bold;
@@ -113,9 +113,9 @@
 </head>
 <body>
 
-<h2>🧩 Teka-Teki Provinsi Interaktif</h2>
-<p>Sentuh atau klik huruf berurutan untuk membentuk nama provinsi.</p>
-
+<h2> Teka-Teki Provinsi Monopoli Nusantara</h2>
+<p>Klick huruf harus ber-urutan ya, dari kiri ke kanan / atas bawah yang membentuk kata itu</p>
+<p>Kalo ga ber-urutan maka jawaban tidak akan di benarkan</p>
 <table id="grid"></table>
 
 <h3>🗺️ Daftar Provinsi:</h3>
@@ -212,8 +212,9 @@ function updateTimer() {
     clearInterval(timerInterval);
     gameOver = true;
     Swal.fire({
-      title: '⏰ Waktu Habis!',
-      text: 'Tolol anak UPI, Coba lagi yuk!',
+      title: '⏰ Yah Waktunya Habis!',
+      text: 'Coba lagi aja ya, Goodluck!',
+      text: 'Semangat ya! dari Sahwa Sabila',
       icon: 'error',
       confirmButtonText: 'Ulangi'
     }).then(() => {
@@ -315,30 +316,33 @@ function checkWord() {
     const random = questionSet[Math.floor(Math.random() * questionSet.length)];
 
     Swal.fire({
-      title: `🎉 Kamu menemukan: ${found}`,
-      text: random.q,
-      input: 'text',
-      inputPlaceholder: 'Tulis jawabanmu di sini...',
-      showCancelButton: false,
-      confirmButtonText: 'Cek Jawaban',
-      preConfirm: (answer) => {
-        if (!answer) {
-          Swal.showValidationMessage('Jawaban tidak boleh kosong!');
-          return false;
+        title: `🎉 Anjay Kamu Bener Nih Ada Pertanyaan Seputar Kata Ini: ${found}`,
+        text: random.q,
+        input: 'text',
+        inputPlaceholder: 'Tulis jawabanmu di sini...',
+        showCancelButton: false,
+        confirmButtonText: 'Cek Jawaban',
+        preConfirm: (answer) => {
+            if (!answer) {
+            Swal.showValidationMessage('Jawaban tidak boleh kosong!');
+            return false;
+            }
+            return answer;
         }
-        return answer;
-      }
-    }).then(result => {
-      if (result.isConfirmed) {
-        const userAnswer = result.value.trim().toLowerCase();
-        const correctAnswer = random.a.trim().toLowerCase();
+        }).then(result => {
+        if (result.isConfirmed) {
+            const userAnswer = result.value.trim().toLowerCase();
+            const correctAnswer = random.a.trim().toLowerCase();
 
-        if (userAnswer === correctAnswer) {
-          Swal.fire('✅ Benar!', `Jawabanmu benar: ${random.a}`, 'success');
-        } else {
-          Swal.fire('❌ Salah!', `Jawaban yang benar adalah: ${random.a}`, 'error');
+            clearInterval(timerInterval); // ⏹️ Stop timer di sini
+            gameOver = true;
+
+            if (userAnswer === correctAnswer) {
+            Swal.fire('✅ Benar!', `Jawabanmu benar: ${random.a}`, 'success');
+            } else {
+            Swal.fire('❌ Salah!', `Jawaban yang benar adalah: ${random.a}`, 'error');
+            }
         }
-      }
     });
   }
 }
